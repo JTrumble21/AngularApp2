@@ -1,0 +1,48 @@
+<?php
+require_once 'connect.php';
+
+$sql = "SELECT id, name, area, date, time FROM reservations";
+$result = mysqli_query($con, $sql);
+
+$reservations = [];
+if ($result) {
+    while ($row = mysqli_fetch_assoc($result)) {
+        $reservations[] = $row;
+    }
+} else {
+    die("Database query failed.");
+}
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Reservations List</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <h1>Reservations List</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Area</th>
+        <th>Date</th>
+        <th>Time</th>
+      </tr>
+    </thead>
+    <tbody>
+      <?php foreach ($reservations as $res): ?>
+        <tr>
+          <td><?= htmlspecialchars($res['id']) ?></td>
+          <td><?= htmlspecialchars($res['name']) ?></td>
+          <td><?= htmlspecialchars($res['area']) ?></td>
+          <td><?= htmlspecialchars($res['date']) ?></td>
+          <td><?= htmlspecialchars($res['time']) ?></td>
+        </tr>
+      <?php endforeach; ?>
+    </tbody>
+  </table>
+</body>
+</html>
