@@ -7,8 +7,8 @@ import { Reservation } from './reservation';
   providedIn: 'root'
 })
 export class ReservationService {
-  // Corrected URL to singular filename
-  private apiUrl = 'http://localhost/AngularApp2/AngularApp2/reservationapi/getReservation.php';
+ 
+ private apiUrl = 'http://localhost/ANGULARAPP2/AngularApp2/reservationapi/getReservation.php';
 
   constructor(private http: HttpClient) { }
 

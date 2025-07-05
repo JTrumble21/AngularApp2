@@ -1,25 +1,27 @@
 <h1>Reservation List</h1>
 
-<div *ngIf="success" style="color: green; margin-bottom: 10px;">{{ success }}</div>
-<div *ngIf="error" style="color: red; margin-bottom: 10px;">{{ error }}</div>
+<div *ngIf="success" class="alert success">{{ success }}</div>
+<div *ngIf="error" class="alert error">{{ error }}</div>
 
-<table border="1" cellpadding="8" cellspacing="0" style="width: 100%; border-collapse: collapse;">
-  <thead style="background-color: #f0f0f0;">
-    <tr>
-      <th>ID</th>
-      <th>Name</th>
-      <th>Area</th>
-      <th>Date</th>
-      <th>Time</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let res of reservations">
-      <td>{{ res.id }}</td>
-      <td>{{ res.name }}</td>
-      <td>{{ res.area }}</td>
-      <td>{{ res.date }}</td>
-      <td>{{ res.time }}</td>
-    </tr>
-  </tbody>
-</table>
+<div class="table-container">
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Area</th>
+        <th>Date</th>
+        <th>Time</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let res of reservations">
+        <td>{{ res.id }}</td>
+        <td>{{ res.name }}</td>
+        <td>{{ res.area }}</td>
+        <td>{{ res.date }}</td>
+        <td>{{ res.time }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
