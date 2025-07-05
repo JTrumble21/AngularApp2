@@ -1,4 +1,3 @@
-// src/app/reservation.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -8,7 +7,7 @@ import { Reservation } from './reservation';
   providedIn: 'root'
 })
 export class ReservationService {
-  private apiUrl = 'http://localhost/AngularApp2/api/getReservations.php';
+private apiUrl = 'http://localhost/reservationapi/getReservations.php';
 
   constructor(private http: HttpClient) {}
 
