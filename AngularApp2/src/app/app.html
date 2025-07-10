@@ -1,27 +1,27 @@
 <h1>Reservation List</h1>
 
-<div *ngIf="success" class="alert success">{{ success }}</div>
-<div *ngIf="error" class="alert error">{{ error }}</div>
+<div *ngIf="success" class="success">{{ success }}</div>
+<div *ngIf="error" class="error">{{ error }}</div>
 
-<div class="table-container">
-  <table>
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Area</th>
-        <th>Date</th>
-        <th>Time</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let res of reservations">
-        <td>{{ res.id }}</td>
-        <td>{{ res.name }}</td>
-        <td>{{ res.area }}</td>
-        <td>{{ res.date }}</td>
-        <td>{{ res.time }}</td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+<table class="styled-table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Area</th>
+      <th>Date</th>
+      <th>Time</th>
+      <th>Photo</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let res of reservations">
+      <td>{{ res.id }}</td>
+      <td>{{ res.name }}</td>
+      <td>{{ res.area }}</td>
+      <td>{{ res.date }}</td>
+      <td>{{ res.time }}</td>
+      <td><img [src]="res.image" alt="Reservation Image" class="thumbnail" /></td>
+    </tr>
+  </tbody>
+</table>

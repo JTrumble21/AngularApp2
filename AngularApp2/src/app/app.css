@@ -46,3 +46,11 @@ td {
   padding: 12px 15px;
   vertical-align: middle;
 }
+
+.thumbnail {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}

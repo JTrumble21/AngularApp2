@@ -4,4 +4,5 @@ export interface Reservation {
   area: string;
   date: string;
   time: string;
+  image: string;
 }
