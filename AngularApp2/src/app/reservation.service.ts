@@ -3,7 +3,9 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Reservation } from './reservation';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({
+  providedIn: 'root'
+})
 export class ReservationService {
   private apiUrl = 'http://localhost/ANGULARAPP2/AngularApp2/reservationapi';
 

@@ -3,16 +3,12 @@
 
   <button (click)="showAddForm = true" class="add-btn">Add New Reservation</button>
 
+  <p>Number of reservations: {{ reservations.length }}</p>
+
   <table>
     <thead>
       <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Area</th>
-        <th>Date</th>
-        <th>Time</th>
-        <th>Photo</th>
-        <th>Actions</th>
+        <th>ID</th><th>Name</th><th>Area</th><th>Date</th><th>Time</th><th>Photo</th><th>Actions</th>
       </tr>
     </thead>
     <tbody>
@@ -33,10 +29,10 @@
   </table>
 </div>
 
-<!-- Add Reservation Form -->
+<!-- Add Form -->
 <app-addReservation *ngIf="showAddForm" (close)="closeAddForm()"></app-addReservation>
 
-<!-- Edit Reservation Form -->
+<!-- Edit Form -->
 <app-editReservation
   *ngIf="editingReservation"
   [reservation]="editingReservation"

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgIf, NgFor } from '@angular/common';
 import { ReservationService } from './reservation.service';
 import { Reservation } from './reservation';
 import { AddReservationComponent } from './addReservation';
@@ -8,7 +8,13 @@ import { EditReservationComponent } from './editReservation';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, AddReservationComponent, EditReservationComponent],
+  imports: [
+    CommonModule,
+    NgIf,
+    NgFor,
+    AddReservationComponent,
+    EditReservationComponent
+  ],
   templateUrl: './app.html',
   styleUrls: ['./app.css']
 })
@@ -21,12 +27,15 @@ export class AppComponent {
     this.loadReservations();
   }
 
-  loadReservations() {
-    this.reservationService.getAll().subscribe({
-      next: (data) => this.reservations = data,
-      error: () => console.error('Failed to load reservations')
-    });
-  }
+ loadReservations() {
+  this.reservationService.getAll().subscribe({
+    next: data => {
+      console.log('Reservations loaded:', data);
+      this.reservations = data;
+    },
+    error: err => console.error('Failed to load reservations', err)
+  });
+}
 
   getImagePath(image: string): string {
     return `http://localhost/ANGULARAPP2/AngularApp2/reservationapi/${image}`;

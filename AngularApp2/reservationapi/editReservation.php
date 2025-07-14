@@ -1,5 +1,5 @@
 <?php
-require_once 'connect.php';
+require 'connect.php';
 
 $id = $_POST['id'] ?? '';
 $name = $_POST['name'] ?? '';
@@ -14,12 +14,12 @@ if (!$id) {
     exit;
 }
 
-// Handle image upload if present
+// Upload image if new one is provided
 if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
     $uploadDir = 'uploads/';
     $filename = basename($_FILES['image']['name']);
     $targetFile = $uploadDir . time() . '_' . $filename;
-    
+
     if (move_uploaded_file($_FILES['image']['tmp_name'], $targetFile)) {
         $imagePath = $targetFile;
     }

@@ -1,20 +1,17 @@
 <?php
-require_once 'connect.php';
+header('Content-Type: application/json');
+require 'connect.php';
 
-$sql = "SELECT id, name, area, date, time, image FROM reservations";
-$result = mysqli_query($con, $sql);
+$sql = "SELECT * FROM reservations ORDER BY id DESC";
+$result = $con->query($sql);
 
 $reservations = [];
-if ($result) {
-    while ($row = mysqli_fetch_assoc($result)) {
-        $reservations[] = $row;
-    }
-    header('Content-Type: application/json');
-    echo json_encode($reservations);
-} else {
-    http_response_code(500);
-    echo json_encode(["message" => "Database query failed."]);
+
+while ($row = $result->fetch_assoc()) {
+    $reservations[] = $row;
 }
 
-mysqli_close($con);
+echo json_encode($reservations);
+
+$con->close();
 ?>

@@ -1,18 +1,18 @@
 <?php
-require_once 'connect.php';
+require 'connect.php';
 
 $name = $_POST['name'] ?? '';
 $area = $_POST['area'] ?? '';
 $date = $_POST['date'] ?? '';
 $time = $_POST['time'] ?? '';
+$imagePath = 'uploads/placeholder.jpeg'; // default image
 
-$imagePath = 'uploads/placeholder.jpeg'; // Default placeholder
-
+// Upload image if present
 if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
     $uploadDir = 'uploads/';
     $filename = basename($_FILES['image']['name']);
     $targetFile = $uploadDir . time() . '_' . $filename;
-    
+
     if (move_uploaded_file($_FILES['image']['tmp_name'], $targetFile)) {
         $imagePath = $targetFile;
     }
