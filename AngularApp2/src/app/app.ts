@@ -38,7 +38,7 @@ export class AppComponent {
 }
 
   getImagePath(image: string): string {
-    return `http://localhost/ANGULARAPP2/AngularApp2/reservationapi/${image}`;
+    return `http://localhost/ANGULARAPP2/AngularApp2/reservationapi/uploads/placeholder.jpeg`
   }
 
   onEdit(reservation: Reservation) {

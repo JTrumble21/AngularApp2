@@ -2,7 +2,7 @@
 header('Content-Type: application/json');
 require 'connect.php';
 
-$sql = "SELECT * FROM reservations ORDER BY id DESC";
+$sql = "SELECT * FROM reservations ORDER BY id ASC";
 $result = $con->query($sql);
 
 $reservations = [];
