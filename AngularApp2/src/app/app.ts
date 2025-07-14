@@ -1,41 +1,48 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
 import { ReservationService } from './reservation.service';
 import { Reservation } from './reservation';
+import { AddReservationComponent } from './addReservation';
+import { EditReservationComponent } from './editReservation';
 
 @Component({
-  standalone: true,
   selector: 'app-root',
-  imports: [
-    CommonModule,
-    HttpClientModule
-  ],
+  standalone: true,
+  imports: [CommonModule, AddReservationComponent, EditReservationComponent],
   templateUrl: './app.html',
   styleUrls: ['./app.css']
 })
-export class App implements OnInit {
+export class AppComponent {
   reservations: Reservation[] = [];
-  success: string = '';
-  error: string = '';
+  showAddForm = false;
+  editingReservation: Reservation | null = null;
 
-  constructor(private reservationService: ReservationService) {}
+  constructor(private reservationService: ReservationService) {
+    this.loadReservations();
+  }
 
-  ngOnInit() {
+  loadReservations() {
     this.reservationService.getAll().subscribe({
-      next: (data: Reservation[]) => {
-        this.reservations = data;
-        this.success = 'Reservations loaded successfully.';
-        // Optionally clear the success message after a few seconds
-        setTimeout(() => this.success = '', 4000);
-      },
-      error: (err) => {
-        this.error = 'Failed to load reservations.';
-        console.error(err);
-        // Optionally clear the error message after a few seconds
-        setTimeout(() => this.error = '', 4000);
-      }
+      next: (data) => this.reservations = data,
+      error: () => console.error('Failed to load reservations')
     });
   }
-}
 
+  getImagePath(image: string): string {
+    return `http://localhost/ANGULARAPP2/AngularApp2/reservationapi/${image}`;
+  }
+
+  onEdit(reservation: Reservation) {
+    this.editingReservation = { ...reservation };
+  }
+
+  closeAddForm() {
+    this.showAddForm = false;
+    this.loadReservations();
+  }
+
+  closeEditForm() {
+    this.editingReservation = null;
+    this.loadReservations();
+  }
+}

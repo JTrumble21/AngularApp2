@@ -1,27 +1,44 @@
-<h1>Reservation List</h1>
+<div class="table-container">
+  <h1>Reservation List</h1>
 
-<div *ngIf="success" class="success">{{ success }}</div>
-<div *ngIf="error" class="error">{{ error }}</div>
+  <button (click)="showAddForm = true" class="add-btn">Add New Reservation</button>
 
-<table class="styled-table">
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>Name</th>
-      <th>Area</th>
-      <th>Date</th>
-      <th>Time</th>
-      <th>Photo</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let res of reservations">
-      <td>{{ res.id }}</td>
-      <td>{{ res.name }}</td>
-      <td>{{ res.area }}</td>
-      <td>{{ res.date }}</td>
-      <td>{{ res.time }}</td>
-      <td><img [src]="res.image" alt="Reservation Image" class="thumbnail" /></td>
-    </tr>
-  </tbody>
-</table>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Area</th>
+        <th>Date</th>
+        <th>Time</th>
+        <th>Photo</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let res of reservations">
+        <td>{{ res.id }}</td>
+        <td>{{ res.name }}</td>
+        <td>{{ res.area }}</td>
+        <td>{{ res.date }}</td>
+        <td>{{ res.time }}</td>
+        <td>
+          <img [src]="getImagePath(res.image)" alt="Photo" class="thumbnail" />
+        </td>
+        <td>
+          <button (click)="onEdit(res)">Edit</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Add Reservation Form -->
+<app-addReservation *ngIf="showAddForm" (close)="closeAddForm()"></app-addReservation>
+
+<!-- Edit Reservation Form -->
+<app-editReservation
+  *ngIf="editingReservation"
+  [reservation]="editingReservation"
+  (close)="closeEditForm()"
+></app-editReservation>

@@ -21,10 +21,11 @@
                 "input": "public"
               }
             ],
-            "styles": [
-              "@angular/material/prebuilt-themes/magenta-violet.css",
-              "src/app/app.css"
-            ],
+           "styles": [
+            "src/app/app.css",
+            "@angular/material/prebuilt-themes/magenta-violet.css"
+]
+          ,
             "server": "src/main.server.ts",
             "outputMode": "server",
             "ssr": {
