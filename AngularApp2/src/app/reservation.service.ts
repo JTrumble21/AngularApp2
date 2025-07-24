@@ -14,9 +14,12 @@ export class ReservationService {
   getAll(): Observable<Reservation[]> {
     return this.http.get<Reservation[]>(`${this.apiUrl}/getReservation.php`);
   }
+  getById(id: number): Observable<Reservation> {
+    return this.http.get<Reservation>(`${this.apiUrl}/getReservation.php?id=${id}`);
+  }
 
   addReservation(formData: FormData): Observable<any> {
-    return this.http.post(`${this.apiUrl}/insertReservation.php`, formData);
+  return this.http.post(`${this.apiUrl}/addReservation.php`, formData);
   }
 
   editReservation(formData: FormData): Observable<any> {

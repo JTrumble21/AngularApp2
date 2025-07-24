@@ -1,0 +1,75 @@
+import { Component } from '@angular/core';
+import { CommonModule, NgFor } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { ReservationService } from './reservation.service';
+import { Reservation } from './reservation';
+
+@Component({
+  selector: 'app-reservations-list',
+  standalone: true,
+  imports: [CommonModule, NgFor, RouterModule],
+  template: `
+    <div class="table-container">
+      <h1>Reservation List</h1>
+
+      <a routerLink="/add" class="add-btn">Add New Reservation</a>
+
+      <p>Number of reservations: {{ reservations.length }}</p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th><th>Name</th><th>Area</th><th>Date</th><th>Time</th><th>Photo</th><th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let res of reservations">
+            <td>{{ res.id }}</td>
+            <td>{{ res.name }}</td>
+            <td>{{ res.area }}</td>
+            <td>{{ res.date }}</td>
+            <td>{{ formatTime(res.time) }}</td>
+            <td>
+              <img [src]="getImagePath(res.image)" alt="Photo" class="thumbnail" />
+            </td>
+            <td>
+              <a [routerLink]="['/edit', res.id]">Edit</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  `,
+  styleUrls: ['./app.css']
+})
+export class ReservationsListComponent {
+  reservations: Reservation[] = [];
+
+  constructor(private reservationService: ReservationService) {
+    this.loadReservations();
+  }
+
+  loadReservations() {
+    this.reservationService.getAll().subscribe({
+      next: (data) => this.reservations = data,
+      error: (err) => console.error('Failed to load reservations', err)
+    });
+  }
+
+  getImagePath(image: string): string {
+    return image
+      ? `http://localhost/ANGULARAPP2/AngularApp2/reservationapi/${image}`
+      : `http://localhost/ANGULARAPP2/AngularApp2/reservationapi/uploads/placeholder.jpeg`;
+  }
+
+  // Convert "HH:mm" 24-hour string to "hh:mm AM/PM" format
+  formatTime(time24: string): string {
+    if (!time24) return '';
+    const [hourStr, minute] = time24.split(':');
+    let hour = parseInt(hourStr, 10);
+    const ampm = hour >= 12 ? 'PM' : 'AM';
+    hour = hour % 12;
+    if (hour === 0) hour = 12;
+    return `${hour}:${minute} ${ampm}`;
+  }
+}

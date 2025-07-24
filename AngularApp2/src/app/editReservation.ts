@@ -1,6 +1,7 @@
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ReservationService } from './reservation.service';
 import { Reservation } from './reservation';
 
@@ -10,37 +11,64 @@ import { Reservation } from './reservation';
   imports: [CommonModule, ReactiveFormsModule],
   template: `
     <h2>Edit Reservation</h2>
-    <form [formGroup]="form" (ngSubmit)="onSubmit()">
-      <input type="hidden" formControlName="id" />
-      <label>Name: <input type="text" formControlName="name" /></label><br>
-      <label>Area: <input type="text" formControlName="area" /></label><br>
-      <label>Date: <input type="date" formControlName="date" /></label><br>
-      <label>Time: <input type="time" formControlName="time" /></label><br>
-      <label>Photo: <input type="file" (change)="onFileSelected($event)" /></label><br>
+    <form *ngIf="form" [formGroup]="form" (ngSubmit)="onSubmit()">
+      <label>Name: <input type="text" formControlName="name" /></label><br />
+      <label>Area:
+      <select formControlName="area">
+      <option value="">Select an area</option>
+      <option value="Cedar Ridge">Cedar Ridge</option>
+      <option value="Lake Nibi">Lake Nibi</option>
+      <option value="Redbird Meadow">Redbird Meadow</option>
+      <option value="Birchwood Trails">Birchwood Trails</option>
+      </select>
+      </label><br />
+      <label>Date: <input type="date" formControlName="date" /></label><br />
+      <label>Time: <input type="time" formControlName="time" /></label><br />
+      <label>Photo: <input type="file" (change)="onFileSelected($event)" /></label><br />
       <button type="submit">Save</button>
-      <button type="button" (click)="onClose()">Cancel</button>
+      <button type="button" (click)="cancel()">Cancel</button>
     </form>
     <p *ngIf="message">{{ message }}</p>
   `
 })
 export class EditReservationComponent implements OnInit {
-  @Input() reservation!: Reservation;
-  @Output() close = new EventEmitter<void>();
-
   form!: FormGroup;
   selectedFile?: File;
   message = '';
+  reservationId!: number;
 
-  constructor(private fb: FormBuilder, private reservationService: ReservationService) {}
+  constructor(
+    private fb: FormBuilder,
+    private reservationService: ReservationService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {}
 
   ngOnInit() {
-    this.form = this.fb.group({
-      id: [this.reservation.id],
-      name: [this.reservation.name, Validators.required],
-      area: [this.reservation.area, Validators.required],
-      date: [this.reservation.date, Validators.required],
-      time: [this.reservation.time, Validators.required],
-      image: ['']
+    this.route.paramMap.subscribe(params => {
+      const idParam = params.get('id');
+      if (idParam) {
+        this.reservationId = +idParam;
+        this.loadReservation(this.reservationId);
+      }
+    });
+  }
+
+  loadReservation(id: number) {
+    this.reservationService.getById(id).subscribe({
+      next: (res: Reservation) => {
+        this.form = this.fb.group({
+          id: [res.id],
+          name: [res.name, Validators.required],
+          area: [res.area, Validators.required],
+          date: [res.date, Validators.required],
+          time: [res.time, Validators.required],
+          image: ['']
+        });
+      },
+      error: () => {
+        this.message = 'Failed to load reservation';
+      }
     });
   }
 
@@ -53,7 +81,7 @@ export class EditReservationComponent implements OnInit {
 
   onSubmit() {
     const formData = new FormData();
-    formData.append('id', this.form.value.id);
+    formData.append('id', String(this.form.value.id)); // ✅ Fix: Convert to string
     formData.append('name', this.form.value.name);
     formData.append('area', this.form.value.area);
     formData.append('date', this.form.value.date);
@@ -63,15 +91,17 @@ export class EditReservationComponent implements OnInit {
     }
 
     this.reservationService.editReservation(formData).subscribe({
-      next: res => {
+      next: (res) => {
         this.message = res.message || 'Reservation updated.';
-        this.close.emit();
+        setTimeout(() => this.router.navigateByUrl('/'), 1000);
       },
-      error: () => this.message = 'Failed to update reservation.'
+      error: () => {
+        this.message = 'Failed to update reservation.';
+      }
     });
   }
 
-  onClose() {
-    this.close.emit();
+  cancel() {
+    this.router.navigateByUrl('/');
   }
 }

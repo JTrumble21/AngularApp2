@@ -1,7 +1,7 @@
 <div class="table-container">
   <h1>Reservation List</h1>
 
-  <button (click)="showAddForm = true" class="add-btn">Add New Reservation</button>
+  <a routerLink="/add" class="add-btn">Add New Reservation</a>
 
   <p>Number of reservations: {{ reservations.length }}</p>
 
@@ -22,19 +22,11 @@
           <img [src]="getImagePath(res.image)" alt="Photo" class="thumbnail" />
         </td>
         <td>
-          <button (click)="onEdit(res)">Edit</button>
+          <a [routerLink]="['/edit', res.id]">Edit</a>
         </td>
       </tr>
     </tbody>
   </table>
 </div>
 
-<!-- Add Form -->
-<app-addReservation *ngIf="showAddForm" (close)="closeAddForm()"></app-addReservation>
-
-<!-- Edit Form -->
-<app-editReservation
-  *ngIf="editingReservation"
-  [reservation]="editingReservation"
-  (close)="closeEditForm()"
-></app-editReservation>
+<router-outlet></router-outlet>

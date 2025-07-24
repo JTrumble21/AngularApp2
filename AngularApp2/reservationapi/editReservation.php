@@ -1,7 +1,9 @@
 <?php
 require 'connect.php';
 
-$id = $_POST['id'] ?? '';
+header('Content-Type: application/json');
+
+$id = (int) ($_POST['id'] ?? 0);
 $name = $_POST['name'] ?? '';
 $area = $_POST['area'] ?? '';
 $date = $_POST['date'] ?? '';
@@ -17,6 +19,10 @@ if (!$id) {
 // Upload image if new one is provided
 if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
     $uploadDir = 'uploads/';
+    if (!is_dir($uploadDir)) {
+        mkdir($uploadDir, 0777, true);
+    }
+
     $filename = basename($_FILES['image']['name']);
     $targetFile = $uploadDir . time() . '_' . $filename;
 
@@ -27,7 +33,7 @@ if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
 
 if ($imagePath) {
     $stmt = $con->prepare("UPDATE reservations SET name=?, area=?, date=?, time=?, image=? WHERE id=?");
-    $stmt->bind_param("sssssi", $name, $area, $date, $time, $imagePath, $id);
+    $stmt->bind_param("ssssssi", $name, $area, $date, $time, $imagePath, $id);
 } else {
     $stmt = $con->prepare("UPDATE reservations SET name=?, area=?, date=?, time=? WHERE id=?");
     $stmt->bind_param("ssssi", $name, $area, $date, $time, $id);
