@@ -23,6 +23,7 @@
         </td>
         <td>
           <a [routerLink]="['/edit', res.id]">Edit</a>
+          <button (click)="deleteReservation(res.id)">Delete</button>
         </td>
       </tr>
     </tbody>

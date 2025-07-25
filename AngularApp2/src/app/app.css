@@ -122,3 +122,16 @@ form button:hover {
 .add-btn:hover {
   background-color: #218838;
 }
+button {
+  margin-left: 8px;
+  padding: 4px 8px;
+  border: none;
+  border-radius: 4px;
+  background-color: #d9534f;
+  color: white;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #c9302c;
+}

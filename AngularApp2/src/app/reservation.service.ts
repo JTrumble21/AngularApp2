@@ -25,4 +25,13 @@ export class ReservationService {
   editReservation(formData: FormData): Observable<any> {
     return this.http.post(`${this.apiUrl}/editReservation.php`, formData);
   }
+  
+  deleteReservation(id: number): Observable<any> {
+  const formData = new FormData();
+  formData.append('id', id.toString());
+
+  return this.http.post<any>(`${this.apiUrl}/deleteReservation.php`, formData);
+}
+
+
 }
