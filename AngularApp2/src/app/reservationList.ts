@@ -42,7 +42,7 @@ import { Reservation } from './reservation';
       </table>
     </div>
   `,
-  styleUrls: ['./app.css']
+  styleUrls: ['app/angular.css']
 })
 export class ReservationsListComponent {
   reservations: Reservation[] = [];
