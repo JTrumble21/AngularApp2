@@ -33,9 +33,9 @@ import { Reservation } from './reservation';
               <img [src]="getImagePath(res.image)" alt="Photo" class="thumbnail" />
             </td>
             <td>
-            <a [routerLink]="['/edit', res.id]">Edit</a>
-            &nbsp;|&nbsp;
-            <button (click)="deleteReservation(res.id)">Delete</button>
+              <a [routerLink]="['/edit', res.id]">Edit</a>
+              &nbsp;|&nbsp;
+              <button (click)="deleteReservation(res.id)">Delete</button>
             </td>
           </tr>
         </tbody>
@@ -65,20 +65,20 @@ export class ReservationsListComponent {
   }
 
   deleteReservation(id: number) {
-  if (confirm('Are you sure you want to delete this reservation?')) {
-    this.reservationService.deleteReservation(id).subscribe({
-      next: res => {
-        alert(res.message);
-        this.loadReservations();  // Reload list after deletion
-      },
-      error: err => {
-        alert('Failed to delete reservation.');
-        console.error(err);
-      }
-    });
+    if (confirm('Are you sure you want to delete this reservation?')) {
+      this.reservationService.deleteReservation(id).subscribe({
+        next: res => {
+          alert(res.message);
+          this.loadReservations();
+        },
+        error: err => {
+          alert('Failed to delete reservation.');
+          console.error(err);
+        }
+      });
+    }
   }
-}
-  // Convert "HH:mm" 24-hour string to "hh:mm AM/PM" format
+
   formatTime(time24: string): string {
     if (!time24) return '';
     const [hourStr, minute] = time24.split(':');
@@ -88,4 +88,8 @@ export class ReservationsListComponent {
     if (hour === 0) hour = 12;
     return `${hour}:${minute} ${ampm}`;
   }
+
+ goToAboutUs(): void {
+  window.location.href = 'http://localhost/ANGULARAPP2/AngularApp2/reservationapi/aboutUs.php';
 }
+  }
