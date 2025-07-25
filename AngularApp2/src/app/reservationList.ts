@@ -10,10 +10,10 @@ import { Reservation } from './reservation';
   imports: [CommonModule, NgFor, RouterModule],
   template: `
     <div class="table-container">
-      <h1>Reservation List</h1>
+      <h1>Canada Parks Reservation List</h1>
 
       <a routerLink="/add" class="add-btn">Add New Reservation</a>
-
+      <button (click)="goToAboutUs()" class="about-button">About Us</button>
       <p>Number of reservations: {{ reservations.length }}</p>
 
       <table>

@@ -1,4 +1,3 @@
-// app.ts
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
@@ -8,4 +7,6 @@ import { RouterModule } from '@angular/router';
   imports: [RouterModule],
   template: `<router-outlet></router-outlet>`
 })
-export class AppComponent {}
+export class AppComponent {};
+
+

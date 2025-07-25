@@ -32,6 +32,9 @@ export class ReservationService {
 
   return this.http.post<any>(`${this.apiUrl}/deleteReservation.php`, formData);
 }
+goToAboutUs() {
+  window.location.href = 'aboutUs.php';
+}
 
 
 }
