@@ -3,62 +3,52 @@ header('Content-Type: application/json');
 require 'connect.php';
 
 $name = $_POST['name'] ?? '';
+$phone = $_POST['phone'] ?? '';
 $area = $_POST['area'] ?? '';
 $date = $_POST['date'] ?? '';
 $time = $_POST['time'] ?? '';
-$imagePath = '';
+$imagePath = 'uploads/placeholder.jpeg';
 
-if (!$name || !$area || !$date || !$time) {
-    http_response_code(400);
-    echo json_encode(['success' => false, 'message' => 'Missing required fields']);
+if (!$name || !$phone || !$area || !$date || !$time) {
+    echo json_encode(['message' => 'Missing required fields']);
     exit;
 }
 
-// Upload directory
-$uploadDir = 'uploads/';
-if (!is_dir($uploadDir)) {
-    mkdir($uploadDir, 0755, true);
+// Check for duplicate phone
+$stmt = $con->prepare("SELECT id FROM reservations WHERE phone = ?");
+$stmt->bind_param("s", $phone);
+$stmt->execute();
+$stmt->store_result();
+if ($stmt->num_rows > 0) {
+    echo json_encode(['message' => 'Duplicate phone number detected']);
+    exit;
 }
+$stmt->close();
 
 // Handle image upload
-if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
-    $tmpName = $_FILES['image']['tmp_name'];
-    $originalName = basename($_FILES['image']['name']);
-    $extension = strtolower(pathinfo($originalName, PATHINFO_EXTENSION));
+if (!empty($_FILES['image']['name'])) {
+    $targetDir = "uploads/";
+    $fileName = basename($_FILES["image"]["name"]);
+    $targetFilePath = $targetDir . $fileName;
 
-    // Allowed image types
-    $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
-    if (in_array($extension, $allowedExtensions)) {
-        $safeName = preg_replace('/[^a-zA-Z0-9._-]/', '', pathinfo($originalName, PATHINFO_FILENAME));
-        $uniqueName = time() . '_' . $safeName . '.' . $extension;
-        $targetFile = $uploadDir . $uniqueName;
-
-        if (move_uploaded_file($tmpName, $targetFile)) {
-            $imagePath = $targetFile;
-        } else {
-            echo json_encode(['success' => false, 'message' => 'Image upload failed']);
-            exit;
-        }
+    if (move_uploaded_file($_FILES["image"]["tmp_name"], $targetFilePath)) {
+        $imagePath = $targetFilePath;
     } else {
-        echo json_encode(['success' => false, 'message' => 'Invalid image type']);
+        echo json_encode(['message' => 'Failed to move uploaded image']);
         exit;
     }
-} else {
-    // No image uploaded; use placeholder
-    $imagePath = 'uploads/placeholder.jpeg';
 }
 
-$stmt = $con->prepare("INSERT INTO reservations (name, area, date, time, image) VALUES (?, ?, ?, ?, ?)");
-$stmt->bind_param("sssss", $name, $area, $date, $time, $imagePath);
+$sql = "INSERT INTO reservations (name, phone, area, date, time, image) VALUES (?, ?, ?, ?, ?, ?)";
+$stmt = $con->prepare($sql);
+$stmt->bind_param("ssssss", $name, $phone, $area, $date, $time, $imagePath);
 
 if ($stmt->execute()) {
-    echo json_encode(['success' => true, 'message' => 'Reservation added.']);
+    echo json_encode(['message' => 'Reservation added successfully']);
 } else {
-    http_response_code(500);
-    echo json_encode(['success' => false, 'message' => 'Database insert failed']);
+    echo json_encode(['message' => 'Failed to add reservation']);
 }
 
 $stmt->close();
 $con->close();
 ?>
-

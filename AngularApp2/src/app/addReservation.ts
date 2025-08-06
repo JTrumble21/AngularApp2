@@ -12,6 +12,7 @@ import { ReservationService } from './reservation.service';
     <h2>Add Reservation</h2>
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
       <label>Name: <input type="text" formControlName="name" /></label><br />
+      <label>Phone: <input type="text" formControlName="phone" /></label><br />
       <label>Area:
         <select formControlName="area">
           <option value="">Select Area</option>
@@ -41,11 +42,12 @@ export class AddReservationComponent {
     public router: Router
   ) {
     this.form = this.fb.group({
-      name: ['', Validators.required],
-      area: ['', Validators.required],
-      date: ['', Validators.required],
-      time: ['', Validators.required]
-    });
+    name: ['', Validators.required],
+    phone: ['', Validators.required],    
+    area: ['', Validators.required],
+    date: ['', Validators.required],
+    time: ['', Validators.required]
+});
   }
 
   onFileSelected(event: Event) {
@@ -58,14 +60,16 @@ export class AddReservationComponent {
   onSubmit() {
     if (this.form.invalid) return;
 
-    const formData = new FormData();
-    formData.append('name', this.form.value.name);
-    formData.append('area', this.form.value.area);
-    formData.append('date', this.form.value.date);
-    formData.append('time', this.form.value.time);
-    if (this.selectedFile) {
-      formData.append('image', this.selectedFile);
-    }
+  const formData = new FormData();
+  formData.append('name', this.form.value.name);
+  formData.append('phone', this.form.value.phone);
+  formData.append('area', this.form.value.area);
+  formData.append('date', this.form.value.date);
+  formData.append('time', this.form.value.time);
+  if (this.selectedFile) {
+  formData.append('image', this.selectedFile);
+}
+
 
     this.reservationService.addReservation(formData).subscribe({
       next: (res) => {
@@ -73,7 +77,7 @@ export class AddReservationComponent {
         setTimeout(() => this.router.navigate(['/']), 1000);
       },
       error: (err) => {
-        this.message = 'Failed to add reservation.';
+        this.message = err.error?.message || 'Failed to add reservation.';
         console.error('Add reservation error:', err);
       }
     });

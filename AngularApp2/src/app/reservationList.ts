@@ -19,18 +19,19 @@ import { Reservation } from './reservation';
       <table>
         <thead>
           <tr>
-            <th>ID</th><th>Name</th><th>Area</th><th>Date</th><th>Time</th><th>Photo</th><th>Actions</th>
+            <th>ID</th><th>Name</th><th>Phone</th><th>Area</th><th>Date</th><th>Time</th><th>Photo</th><th>Actions</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let res of reservations">
             <td>{{ res.id }}</td>
             <td>{{ res.name }}</td>
+            <td>{{ res.phone }}</td>
             <td>{{ res.area }}</td>
             <td>{{ res.date }}</td>
             <td>{{ formatTime(res.time) }}</td>
             <td>
-              <img [src]="getImagePath(res.image)" alt="Photo" class="thumbnail" />
+              <img [src]="res.image || placeholder" alt="Photo" class="thumbnail" />
             </td>
             <td>
               <a [routerLink]="['/edit', res.id]">Edit</a>
@@ -42,10 +43,11 @@ import { Reservation } from './reservation';
       </table>
     </div>
   `,
-  styleUrls: ['app/angular.css']
+  styleUrls: ['./angular.css']
 })
 export class ReservationsListComponent {
   reservations: Reservation[] = [];
+  placeholder = 'http://localhost/ANGULARAPP2/AngularApp2/reservationapi/uploads/placeholder.jpeg';
 
   constructor(private reservationService: ReservationService) {
     this.loadReservations();
@@ -56,12 +58,6 @@ export class ReservationsListComponent {
       next: (data) => this.reservations = data,
       error: (err) => console.error('Failed to load reservations', err)
     });
-  }
-
-  getImagePath(image: string): string {
-    return image
-      ? `http://localhost/ANGULARAPP2/AngularApp2/reservationapi/${image}`
-      : `http://localhost/ANGULARAPP2/AngularApp2/reservationapi/uploads/placeholder.jpeg`;
   }
 
   deleteReservation(id: number) {
@@ -89,7 +85,7 @@ export class ReservationsListComponent {
     return `${hour}:${minute} ${ampm}`;
   }
 
- goToAboutUs(): void {
-  window.location.href = 'http://localhost/ANGULARAPP2/AngularApp2/reservationapi/aboutUs.php';
-}
+  goToAboutUs(): void {
+    window.location.href = 'http://localhost/ANGULARAPP2/AngularApp2/reservationapi/aboutUs.php';
   }
+}

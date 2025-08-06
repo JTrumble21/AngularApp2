@@ -13,19 +13,20 @@ import { Reservation } from './reservation';
     <h2>Edit Reservation</h2>
     <form *ngIf="form" [formGroup]="form" (ngSubmit)="onSubmit()">
       <label>Name: <input type="text" formControlName="name" /></label><br />
+      <label>Phone: <input type="text" formControlName="phone" /></label><br />
       <label>Area:
-      <select formControlName="area">
-      <option value="">Select an area</option>
-      <option value="Cedar Ridge">Cedar Ridge</option>
-      <option value="Lake Nibi">Lake Nibi</option>
-      <option value="Redbird Meadow">Redbird Meadow</option>
-      <option value="Birchwood Trails">Birchwood Trails</option>
-      </select>
+        <select formControlName="area">
+          <option value="">Select an area</option>
+          <option value="Cedar Ridge">Cedar Ridge</option>
+          <option value="Lake Nibi">Lake Nibi</option>
+          <option value="Redbird Meadow">Redbird Meadow</option>
+          <option value="Birchwood Trails">Birchwood Trails</option>
+        </select>
       </label><br />
       <label>Date: <input type="date" formControlName="date" /></label><br />
       <label>Time: <input type="time" formControlName="time" /></label><br />
       <label>Photo: <input type="file" (change)="onFileSelected($event)" /></label><br />
-      <button type="submit">Save</button>
+      <button type="submit" [disabled]="form.invalid">Save</button>
       <button type="button" (click)="cancel()">Cancel</button>
     </form>
     <p *ngIf="message">{{ message }}</p>
@@ -58,12 +59,11 @@ export class EditReservationComponent implements OnInit {
     this.reservationService.getById(id).subscribe({
       next: (res: Reservation) => {
         this.form = this.fb.group({
-          id: [res.id],
           name: [res.name, Validators.required],
+          phone: [res.phone, Validators.required],
           area: [res.area, Validators.required],
           date: [res.date, Validators.required],
-          time: [res.time, Validators.required],
-          image: ['']
+          time: [res.time, Validators.required]
         });
       },
       error: () => {
@@ -80,9 +80,12 @@ export class EditReservationComponent implements OnInit {
   }
 
   onSubmit() {
+    if (this.form.invalid) return;
+
     const formData = new FormData();
-    formData.append('id', String(this.form.value.id)); // ✅ Fix: Convert to string
+    formData.append('id', String(this.reservationId)); // send reservation id
     formData.append('name', this.form.value.name);
+    formData.append('phone', this.form.value.phone);
     formData.append('area', this.form.value.area);
     formData.append('date', this.form.value.date);
     formData.append('time', this.form.value.time);
@@ -95,8 +98,8 @@ export class EditReservationComponent implements OnInit {
         this.message = res.message || 'Reservation updated.';
         setTimeout(() => this.router.navigateByUrl('/'), 1000);
       },
-      error: () => {
-        this.message = 'Failed to update reservation.';
+      error: (err) => {
+        this.message = err.error?.message || 'Failed to update reservation.';
       }
     });
   }

@@ -2,10 +2,11 @@
 header('Content-Type: application/json');
 require 'connect.php';
 
+$uploadBaseUrl = 'http://localhost/ANGULARAPP2/AngularApp2/reservationapi/';
+
 $id = $_GET['id'] ?? null;
 
 if ($id) {
-    // Prepare statement to get one reservation by id
     $stmt = $con->prepare("SELECT * FROM reservations WHERE id = ?");
     $stmt->bind_param("i", $id);
     $stmt->execute();
@@ -13,17 +14,26 @@ if ($id) {
 
     $reservation = $result->fetch_assoc();
 
-    echo json_encode($reservation ?: new stdClass());
+    if ($reservation) {
+        if (!empty($reservation['image']) && strpos($reservation['image'], 'http') !== 0) {
+            $reservation['image'] = $uploadBaseUrl . $reservation['image'];
+        }
+    } else {
+        $reservation = new stdClass();
+    }
 
+    echo json_encode($reservation);
     $stmt->close();
 } else {
-    // Get all reservations ordered by ascending ID
     $sql = "SELECT * FROM reservations ORDER BY id ASC";
     $result = $con->query($sql);
 
     $reservations = [];
 
     while ($row = $result->fetch_assoc()) {
+        if (!empty($row['image']) && strpos($row['image'], 'http') !== 0) {
+            $row['image'] = $uploadBaseUrl . $row['image'];
+        }
         $reservations[] = $row;
     }
 

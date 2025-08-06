@@ -21,11 +21,10 @@
                 "input": "public"
               }
             ],
-           "styles": [
-            "src/app/angular.css",
-            "@angular/material/prebuilt-themes/magenta-violet.css"
-]
-          ,
+            "styles": [
+              "src/app/angular.css",
+              "@angular/material/prebuilt-themes/magenta-violet.css"
+            ],
             "server": "src/main.server.ts",
             "outputMode": "server",
             "ssr": {
@@ -58,6 +57,9 @@
         },
         "serve": {
           "builder": "@angular/build:dev-server",
+          "options": {
+            "port": 4200
+          },
           "configurations": {
             "production": {
               "buildTarget": "AngularApp2:build:production"
