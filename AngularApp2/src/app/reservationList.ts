@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
 import { CommonModule, NgFor } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';  // Import Router here
 import { ReservationService } from './reservation.service';
 import { Reservation } from './reservation';
-import { HttpClientModule } from '@angular/common/http'
 
 @Component({
   selector: 'app-reservations-list',
@@ -15,6 +14,8 @@ import { HttpClientModule } from '@angular/common/http'
 
       <a routerLink="/add" class="add-btn">Add New Reservation</a>
       <button (click)="goToAboutUs()" class="about-button">About Us</button>
+      <button (click)="logout()" class="logout-button">Logout</button> <!-- Added logout button -->
+
       <p>Number of reservations: {{ reservations.length }}</p>
 
       <table>
@@ -50,8 +51,16 @@ export class ReservationsListComponent {
   reservations: Reservation[] = [];
   placeholder = 'http://localhost/ANGULARAPP2/AngularApp2/reservationapi/uploads/placeholder.jpeg';
 
-  constructor(private reservationService: ReservationService) {
+  constructor(
+    private reservationService: ReservationService,
+    private router: Router  // Inject router here
+  ) {
     this.loadReservations();
+  }
+
+  logout() {
+    // Optional: clear any stored session or tokens here
+    this.router.navigate(['/login']);
   }
 
   loadReservations() {

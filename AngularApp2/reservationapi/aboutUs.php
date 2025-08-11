@@ -32,7 +32,7 @@
 
     <p>Our mission is to provide an easy and reliable way for you to book your reservations quickly and securely. Whether you live locally or are visiting one of our beautiful neighborhoods, we are here to assist you every step of the way.</p>
 
-    <a href="http://localhost:4200" class="button">Back to Home</a>
+    <a href="http://localhost:4200/#/reservations">Back to Home</a>
   </main>
 </body>
 </html>

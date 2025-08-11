@@ -10,5 +10,7 @@ Action Items Testing and Results:
 
 Assignment 6 Debugging:
 * Login - Have a uyser hard-coded and in the "employees" table - Works as intended, hard-coding user adds them to the table in MyPHP.
-* Login - Input the hard-coded employee number and password, click submit then redirect to the reservation list- Currently not working, returning "SYSTEM ERROR"
-* Register new employee - Button redirects to registration form - Works as intended, fields can accept input. Register new employee and add themto the table - Currwently not working, returning "SYSTEM ERROR"
+* Login - Input the hard-coded employee number and password, click submit then redirect to the reservation list- Works as intended.
+* Register new employee - Button redirects to registration form - works as intended. Adding a duplicate employee number returns message "Employee number alreadyt exists" - works as intended.
+* Log-out button on reservation list page- redirects to login page - works as intended. 
+* Lock-out time for incorrect login attempts - 
