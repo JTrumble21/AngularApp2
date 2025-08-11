@@ -1,6 +1,9 @@
 import 'zone.js';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { provideRouter, Routes } from '@angular/router';
+import { importProvidersFrom } from '@angular/core';          // <-- add this
+import { HttpClientModule } from '@angular/common/http';      // <-- add this
+
 import { AppComponent } from './app/app'; 
 
 import { ReservationsListComponent } from './app/reservationList';
@@ -20,5 +23,8 @@ const routes: Routes = [
 ];
 
 bootstrapApplication(AppComponent, {
-  providers: [provideRouter(routes)]
+  providers: [
+    provideRouter(routes),
+    importProvidersFrom(HttpClientModule)    
+  ]
 });

@@ -49,8 +49,8 @@ export class LoginComponent {
       const { employeeNumber, password } = this.loginForm.value;
 
       this.http.post<{ success: boolean; message?: string }>(
-  'http://localhost/ANGULARAPP2/AngularApp2/reservationapi/login.php',
-  { employee_number: employeeNumber, password }
+  'http://localhost/AngularApp2/AngularApp2/reservationapi/login.php',
+  { employeeNumber, password }
 )
       .subscribe(response => {
         if (response.success) {

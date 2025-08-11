@@ -3,6 +3,7 @@ import { CommonModule, NgFor } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { ReservationService } from './reservation.service';
 import { Reservation } from './reservation';
+import { HttpClientModule } from '@angular/common/http'
 
 @Component({
   selector: 'app-reservations-list',
